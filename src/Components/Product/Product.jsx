@@ -4,14 +4,14 @@ import { API_URL } from '@/const'
 import Like from '@/assets/heart.svg?react'
 import { ColorList } from '../ColorList/ColorList'
 
-export const Product = ({ id, pic, title, price, colors }) => {
+export const Product = ({ id, pic, title, price, colors, description }) => {
     return (
         <article className={style.product}>
             <NavLink className={style.link} to={`/product/${id}`}>
                 <img
                     className={style.image}
                     src={`${API_URL}/${pic}`}
-                    alt="product image"
+                    alt={`${title} - ${description}`}
                 />
                 <h3 className={style.title}>
                     {title}
