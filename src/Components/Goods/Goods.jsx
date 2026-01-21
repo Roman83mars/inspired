@@ -3,15 +3,14 @@ import { Product } from "../Product/Product"
 import { useSelector } from 'react-redux'
 import { Container } from "../Layout/Container/Container"
 
-export const Goods = ({ categoryData }) => {
+export const Goods = ({ title }) => {
     const { goodsList } = useSelector(state => state.goods)
-    const title = categoryData?.title ?? 'Новинки'
 
     return (
         <section className={style.goods}>
             <Container>
                 <h2 className={style.title}>
-                    {title}
+                    {title ?? 'Новинки'}
                 </h2>
                 <ul className={style.list}>
                     {goodsList.map(item => (
