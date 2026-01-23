@@ -8,10 +8,10 @@ import { API_URL } from '@/const'
 import { ColorList } from '../ColorList/ColorList'
 import style from './ProductPage.module.scss'
 import cn from 'classnames'
-import Like from '@/assets/heart.svg?react'
 import { Count } from '../Count/Count'
 import { ProductSize } from './ProductSize/ProductSize'
 import { Goods } from '../Goods/Goods'
+import { BtnLike } from '../BtnLike/BtnLike'
 
 export const ProductPage = () => {
     const dispatch = useDispatch()
@@ -87,13 +87,7 @@ export const ProductPage = () => {
                             <button className={style.addCart} type='submit' >
                                 В корзину
                             </button>
-                            <button
-                                type="button"
-                                className={style.favorite}
-                                aria-label='Добавить в избранное'
-                            >
-                                <Like />
-                            </button>
+                            <BtnLike id={id} />
                         </div>
                     </form>
                 </Container>
