@@ -2,9 +2,9 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { App } from './App'
 import 'normalize.css'
-import './index.scss'
+import '@assets/styles/index.scss'
 import { Provider } from 'react-redux'
-import store from './store'
+import store from '@/store/store'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

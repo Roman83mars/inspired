@@ -1,7 +1,5 @@
-import { Header } from "../Components/Header/Header"
-import { Main } from "../Components/Layout/Main/Main"
-import { Footer } from "../Components/Footer/Footer"
-import { Outlet } from "react-router-dom"
+import { Header, Main, Footer } from "@components"
+import { Outlet, ScrollRestoration } from "react-router-dom"
 
 export const Root = () => {
     return (
@@ -11,6 +9,7 @@ export const Root = () => {
                 <Outlet />
             </Main>
             <Footer />
+            <ScrollRestoration />
         </>
     )
 }

@@ -1,14 +1,10 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom"
-import { MainPage } from "./Components/MainPage/MainPage"
-import { ErrorPage } from "./Components/ErrorPage/ErrorPage"
-import { Root } from "./routes/Root"
+import { MainPage, ErrorPage, ProductPage, FavoritePage, CartPage, SearchPage } from "@components"
+import { Root } from "@/routes/Root"
 import { useDispatch } from "react-redux"
 import { useEffect } from "react"
-import { fetchNavigation } from "./features/navigationSlice"
-import { fetchColors } from "./features/colorSlice"
-import { ProductPage } from "./Components/ProductPage/ProductPage"
-import { FavoritePage } from "./Components/FavoritePage/FavoritePage"
-import { CartPage } from "./Components/CartPage/CartPage"
+import { fetchNavigation } from "@/store/features/navigationSlice"
+import { fetchColors } from "@/store/features/colorSlice"
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -16,6 +12,7 @@ const router = createBrowserRouter(
             <Route index element={<MainPage />} />
             <Route path='/favorite' element={<FavoritePage />} />
             <Route path='/cart' element={<CartPage />} />
+            <Route path='/search' element={<SearchPage />} />
             <Route path='/product/:id' element={<ProductPage />} />
             <Route path='/catalog/:gender/:category?' element={<MainPage />} />
 
@@ -32,6 +29,6 @@ export const App = () => {
     }, [dispatch])
 
     return (
-        <RouterProvider router={router}></RouterProvider>
+        <RouterProvider router={router} />
     )
 }

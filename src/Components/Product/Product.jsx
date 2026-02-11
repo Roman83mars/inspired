@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom'
 import style from './Product.module.scss'
 import { API_URL } from '@/const'
-import { ColorList } from '../ColorList/ColorList'
-import { BtnLike } from '../BtnLike/BtnLike'
+import { ColorList } from './ColorList/ColorList'
+import { BtnLike } from '@components'
 
 export const Product = ({ id, pic, title, price, colors, description }) => {
     return (

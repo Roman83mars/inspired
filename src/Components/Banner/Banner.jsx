@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom'
-import { Container } from '../Layout/Container/Container'
+import { Container } from '@components'
 import style from './Banner.module.scss'
 import { API_URL } from '@/const'
 import { useMedia } from 'react-use'

@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 import { useLocation } from "react-router-dom"
-import { setPage } from "../features/goodsSlice"
+import { setPage } from "@/store/features/goodsSlice"
 
 export const usePageFromSearchParams = (dispatch) => {
     const location = useLocation()
