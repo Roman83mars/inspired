@@ -68,7 +68,7 @@ export const Footer = () => {
                         <a className={style.link} href='tel:89304902620'>8 930 490 26 20</a>
                     </div>
                     <div className={style.copyright}>
-                        <p>&copy; INSPIRED, 2023</p>
+                        <p>&copy; INSPIRED, 2026</p>
                     </div>
                     <div className={style.development}>
                         <ul className={style.developmentList}>

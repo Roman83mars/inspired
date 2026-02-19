@@ -31,6 +31,10 @@
 
   &Active {
     border-color: #000000;
+  }
+
+  &Disabled {
     pointer-events: none;
+    cursor: default;
   }
 }

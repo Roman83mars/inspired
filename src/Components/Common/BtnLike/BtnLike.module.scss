@@ -9,4 +9,7 @@
 
 .active {
   color: crimson;
+  &:hover {
+    color: rgb(148, 3, 15);
+  }
 }

@@ -1,0 +1,92 @@
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton {
+  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 50%, #f2f2f2 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  gap: 24px 20px;
+  grid-template-areas:
+    "image content content ."
+    "image prop count count";
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eee;
+
+  @media (max-width: 540px) {
+    gap: 10px;
+    grid-template-areas:
+      "image content content ."
+      "prop prop count count";
+  }
+}
+
+.image {
+  grid-area: image;
+  width: 160px;
+  height: 160px;
+
+  @media (max-width: 540px) {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+.content {
+  grid-area: content;
+}
+
+.title {
+  width: 80%;
+  height: 17px;
+  margin-bottom: 12px;
+}
+
+.price {
+  width: 40%;
+  height: 17px;
+  margin-bottom: 24px;
+}
+
+.vendorCode {
+  width: 100px;
+  height: 15px;
+}
+
+.prop {
+  grid-area: prop;
+  display: flex;
+  gap: 20px;
+}
+
+.subtitle {
+  width: 40px;
+  height: 15px;
+  margin-bottom: 12px;
+}
+
+.colorItem {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.sizeItem {
+  width: 65px;
+  height: 24px;
+}
+
+.count {
+  grid-area: count;
+  justify-self: end;
+  align-self: end;
+  width: 100px;
+  height: 40px;
+}

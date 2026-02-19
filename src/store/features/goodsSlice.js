@@ -57,7 +57,9 @@ const goodsSlice = createSlice({
             })
             .addCase(fetchGender.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.goodsList = action.payload
+                state.goodsList = Array.isArray(action.payload)
+                    ? action.payload
+                    : action.payload.goods
                 state.pages = 0
                 state.totalCount = null
             })
@@ -72,7 +74,9 @@ const goodsSlice = createSlice({
             })
             .addCase(fetchCategory.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.goodsList = action.payload.goods
+                state.goodsList = Array.isArray(action.payload)
+                    ? action.payload
+                    : action.payload.goods
                 state.pages = action.payload.pages
                 state.totalCount = action.payload.totalCount
             })
@@ -87,7 +91,9 @@ const goodsSlice = createSlice({
             })
             .addCase(fetchAll.fulfilled, (state, action) => {
                 state.status = 'succeeded'
-                state.goodsList = action.payload
+                state.goodsList = Array.isArray(action.payload)
+                    ? action.payload
+                    : action.payload.goods
                 state.pages = 0
                 state.totalCount = null
             })

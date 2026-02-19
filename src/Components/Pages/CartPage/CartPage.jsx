@@ -5,7 +5,7 @@ import { OrderModal } from "./OrderModal/OrderModal"
 import { useEffect } from "react"
 import { fetchAll } from "@/store/features/goodsSlice"
 import { selectCartIds } from "@/store/features/cartSlice"
-import { Preloader } from "@components"
+import { CartSkeleton } from "@components"
 
 export const CartPage = () => {
     const { cartItems, orderStatus } = useSelector(state => state.cart)
@@ -20,7 +20,13 @@ export const CartPage = () => {
     }, [cartIds, dispatch])
 
     return status === 'loading' && !goodsList.length ? (
-        <Preloader />
+        <ul>
+            {[...Array(3)].map((_, i) => (
+                <li key={i}>
+                    <CartSkeleton />
+                </li>
+            ))}
+        </ul>
     ) : (
         <>
             <Cart cartItems={cartItems} goodsList={goodsList} />

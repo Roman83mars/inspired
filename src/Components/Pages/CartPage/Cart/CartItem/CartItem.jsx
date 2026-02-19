@@ -4,6 +4,7 @@ import { API_URL } from '@/const'
 import cn from 'classnames'
 import { addToCart, removeFromCart } from '@/store/features/cartSlice'
 import { Count } from '@components'
+import { NavLink } from 'react-router-dom'
 
 export const CartItem = ({ id, color, size, count, goodsList }) => {
     const dispatch = useDispatch()
@@ -19,11 +20,15 @@ export const CartItem = ({ id, color, size, count, goodsList }) => {
 
     return (
         <article className={style.item}>
-            <img
-                className={style.image}
-                src={`${API_URL}/${item?.pic}`}
-                alt={`${item?.title} - ${item?.description}`}
-            />
+            <NavLink className={style.imageLink} to={`/product/${id}?color=${color}&size=${size}`}>
+                {item?.pic && (
+                    <img
+                        className={style.image}
+                        src={`${API_URL}/${item?.pic}`}
+                        alt={`${item?.title} - ${item?.description}`}
+                    />
+                )}
+            </NavLink>
             <div className={style.content}>
                 <h3 className={style.title}>{item?.title}</h3>
                 <p className={style.price}>руб {item?.price}</p>

@@ -1,13 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 import { fetchProduct } from '@/store/features/productSlice'
 import { fetchCategory } from '@/store/features/goodsSlice'
 import { addToCart } from '@/store/features/cartSlice'
 import { API_URL } from '@/const'
 import style from './ProductPage.module.scss'
 import cn from 'classnames'
-import { Container, Count, Goods, BtnLike, Preloader } from '@components'
+import { Container, Count, Goods, BtnLike, Preloader, CartSync } from '@components'
 import { ColorList } from '@components/Product/ColorList/ColorList'
 import { ProductSize } from '@components/Product/ProductSize/ProductSize'
 import { Formik, Form } from 'formik'
@@ -22,9 +22,14 @@ const validationSchema = Yup.object().shape({
 export const ProductPage = () => {
     const dispatch = useDispatch()
     const { id } = useParams()
-    const [isAdded, setIsAdded] = useState(false)
+    const [infoMessage, setInfoMessage] = useState('')
+    const [messageType, setMessageType] = useState('success')
     const { product, status } = useSelector(state => state.product)
+    const { cartItems } = useSelector(state => state.cart)
     const { colorList } = useSelector(state => state.color)
+    const [searchParams] = useSearchParams()
+    const colorFromUrl = searchParams.get('color');
+    const sizeFromUrl = searchParams.get('size')
 
     useEffect(() => {
         dispatch(fetchProduct(id)).unwrap().then((res) => {
@@ -38,15 +43,36 @@ export const ProductPage = () => {
         })
     }, [id, dispatch])
     useEffect(() => {
-        if (!isAdded) return;
-        const timeout = setTimeout(() => setIsAdded(false), 2000);
+        if (!infoMessage) return;
+        const timeout = setTimeout(() => setInfoMessage(''), 2000);
         return () => clearTimeout(timeout);
-    }, [isAdded])
+    }, [infoMessage])
 
     const handleSubmit = (values) => {
+        const isAlreadyInCart = cartItems.find(item =>
+            item.id === id &&
+            item.color === values.color &&
+            item.size === values.size
+        )
+        if (isAlreadyInCart) {
+            setMessageType('info');
+            setInfoMessage('Товар уже добавлен в корзину');
+            return;
+        }
         dispatch(addToCart({ id, ...values }));
-        setIsAdded(true);
+        setMessageType('success');
+        setInfoMessage('Товар добавлен в корзину!')
     }
+    const syncWithRedux = (values, newCount) => {
+        const isAlreadyInCart = cartItems.find(item =>
+            item.id === id && item.color === values.color && item.size === values.size
+        );
+        if (isAlreadyInCart) {
+            dispatch(addToCart({ id, ...values, count: newCount }));
+        }
+    }
+
+    const isBtnDisabled = status === 'loading' || !!infoMessage
 
     return status === 'loading' ? (
         <Preloader />
@@ -60,7 +86,7 @@ export const ProductPage = () => {
                         alt={`${product.title} - ${product.description}`}
                     />
                     <Formik
-                        initialValues={{ color: '', size: '', count: 1 }}
+                        initialValues={{ color: colorFromUrl || '', size: sizeFromUrl || '', count: 1 }}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                         enableReinitialize
@@ -75,6 +101,7 @@ export const ProductPage = () => {
                             }
                             return (
                                 <Form className={style.content} >
+                                    <CartSync cartItems={cartItems} productId={id} />
                                     <h2 className={style.title}>{product.title}</h2>
                                     <p className={style.price}>руб {product.price}</p>
 
@@ -105,19 +132,35 @@ export const ProductPage = () => {
                                         <Count
                                             className={style.count}
                                             count={values.count}
-                                            handleInc={() => setFieldValue('count', values.count + 1)}
-                                            handleDec={() => setFieldValue('count', values.count - 1)}
+                                            handleInc={() => {
+                                                const newCount = values.count + 1;
+                                                setFieldValue('count', newCount);
+                                                syncWithRedux(values, newCount);
+                                            }}
+                                            handleDec={() => {
+                                                const newCount = values.count - 1;
+                                                setFieldValue('count', newCount);
+                                                syncWithRedux(values, newCount);
+                                            }}
                                         />
                                         <button
-                                            className={cn(style.addCart, isAdded && style.addCartSuccess)}
+                                            className={cn(
+                                                style.addCart,
+                                                infoMessage && messageType === 'success' && style.addCartSuccess,
+                                                infoMessage && messageType === 'info' && style.addCartInfo
+                                            )}
                                             type='submit'
-                                            disabled={isAdded}
+                                            disabled={isBtnDisabled}
                                         >
-                                            {isAdded ? 'Добавлено!' : 'В корзину'}
+                                            {infoMessage ? 'Готово' : 'В корзину'}
                                         </button>
+                                        {infoMessage && (
+                                            <p className={cn(style.message, style[messageType])}>
+                                                {infoMessage}
+                                            </p>
+                                        )}
                                         <BtnLike id={id} />
                                     </div>
-                                    {isAdded && <p className={style.successText}>Товар успешно добавлен в корзину</p>}
                                 </Form>
                             )
                         }}

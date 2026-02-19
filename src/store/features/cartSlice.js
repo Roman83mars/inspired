@@ -2,6 +2,8 @@ import { createAsyncThunk, createSelector, createSlice } from "@reduxjs/toolkit"
 import { ORDER_URL } from "@/const";
 
 const cartItems = JSON.parse(localStorage.getItem('cart') || '[]')
+const selectCartItems = (state) => state.cart.cartItems
+const selectGoodsList = (state) => state.goods.goodsList
 
 export const sendOrder = createAsyncThunk(
     'cart/sendOrder',
@@ -83,11 +85,18 @@ const cartSlice = createSlice({
     }
 })
 
-const selectCartItems = (state) => state.cart.cartItems
-
 export const selectCartIds = createSelector(
     [selectCartItems],
     (items) => items.map(item => item.id)
+)
+export const selectTotalPrice = createSelector(
+    [selectCartItems, selectGoodsList],
+    (cartItems, goodsList) => {
+        return cartItems.reduce((sum, item) => {
+            const product = goodsList?.find(p => p.id === item.id);
+            return product ? sum + product.price * item.count : sum;
+        }, 0);
+    }
 )
 
 export const { addToCart, removeFromCart, clearCart, resetOrderStatus } = cartSlice.actions

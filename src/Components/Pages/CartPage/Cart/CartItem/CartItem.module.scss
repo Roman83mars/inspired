@@ -14,10 +14,13 @@
   }
 }
 .image {
-  grid-area: image;
   width: 160px;
   height: 160px;
   object-fit: cover;
+
+  &Link {
+    grid-area: image;
+  }
 
   @media (max-width: 540px) {
     width: 80px;
